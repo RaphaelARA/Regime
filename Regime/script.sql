@@ -1,101 +1,83 @@
-CREATE DATABASE regime;
-USE regime;
 
-CREATE TABLE user(
-    idUser INT AUTO_INCREMENT PRIMARY KEY,
-    isAdmin boolean,
-    name VARCHAR(20),
-    mail VARCHAR(50),
-    password VARCHAR(20),
-    gender INT,
-    height FLOAT,
-    weight FLOAT,
-    age INT
+
+CREATE TABLE utilisateur(
+    idUser INTEGER PRIMARY KEY AUTO_INCREMENT,
+    nom VARCHAR(50) NOT NULL,
+    gender VARCHAR(10) NOT NULL,
+    mail VARCHAR(100) NOT NULL,
+    mdp varchar(50) NOT NULL,
+    isAdmin INTEGER NOT NULL
 );
 
-CREATE TABLE goal(
-    idGoal INT AUTO_INCREMENT PRIMARY KEY,
-    goal VARCHAR(10),
-    idUser INT,
-    FOREIGN KEY (idUser) REFERENCES user(idUser)
+CREATE TABLE infoUtilisateur(
+    idUser INTEGER NOT NULL,
+    age INTEGER NOT NULL,
+    taille double NOT NULL,
+    poids double NOT NULL,
+    solde double  NOT NULL,
+    FOREIGN KEY (idUser) REFERENCES utilisateur(idUser)
 );
 
-CREATE TABLE foods(
-    idFood INT AUTO_INCREMENT PRIMARY KEY,
-    nameFood VARCHAR(20),
-    groupFood VARCHAR(20),
-    calorie FLOAT,
-    protein FLOAT,
-    carbohydrate FLOAT, /* glucide */
-    Lipide FLOAT
+
+CREATE TABLE code (
+    idCode INTEGER PRIMARY KEY AUTO_INCREMENT,
+    code VARCHAR(15) NOT NULL,
+    montant DOUBLE NOT NULL,
+    etat INTEGER NOT NULL
 );
 
-CREATE TABLE foodpref(
-    idpref INT AUTO_INCREMENT PRIMARY KEY,
-    allergy VARCHAR(20),
-    restriction VARCHAR(20)
+CREATE TABLE validationCode(
+    idValidation INTEGER PRIMARY KEY AUTO_INCREMENT,
+    idUser INTEGER NOT NULL,
+    code INTEGER NOT NULL,
+    dateArriver DATE NOT NULL,
+    dateValidation DATE,
+    FOREIGN KEY (idUser) REFERENCES utilisatuer(idUser)
 );
 
-CREATE TABLE meal(
-    idMeal INT AUTO_INCREMENT PRIMARY KEY,
-    idUser INT,
-    datemeal DATETIME,
-    FOREIGN KEY (idUser) REFERENCES user(idUser)
+CREATE TABLE objectif(
+    idObjectif INTEGER PRIMARY KEY AUTO_INCREMENT,
+    nom VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE mealplan(
-    idPlan INT AUTO_INCREMENT PRIMARY KEY,
-    idUser INT,
-    idMeal INT,
-    quantity INT,
-    FOREIGN KEY (idUser) REFERENCES user(idUser),
-    FOREIGN KEY (idMeal) REFERENCES meal(idMeal)
+CREATE TABLE regime(
+    idRegime INTEGER PRIMARY KEY AUTO_INCREMENT,
+    idObjectif INTEGER NOT NULL,
+    num INTEGER NOT NULL,
+
+    duree INTEGER NOT NULL,
+    pourcentageV INTEGER NOT NULL,
+    pourcentageL INTEGER NOT NULL,
+    pourcentageP INTEGER NOT NULL,
+    prix DOUBLE NOT NULL,
+    FOREIGN KEY (idObjectif) REFERENCES objectif(idObjectif)
 );
 
-CREATE TABLE progression(
-    idProg INT AUTO_INCREMENT PRIMARY KEY,
-    idUser INT,
-    /* ilay objectif atteint moa izany tsy aiko loatra hoe ahoana vu que tsy initié tanaty table Objectifs akory */
-    FOREIGN KEY (idUser) REFERENCES user(idUser)
+CREATE TABLE activiteSportif(
+    idActivite INTEGER PRIMARY KEY AUTO_INCREMENT,
+    idRegime INTEGER NOT NULL,
+    nom VARCHAR(50) NOT NULL,
+    FOREIGN KEY (idRegime) REFERENCES regime(idRegime)
 );
 
-CREATE TABLE exercices(
-    idExercice INT AUTO_INCREMENT PRIMARY KEY,
-    nameExercice VARCHAR(20),
-    description TEXT,
-    category VARCHAR(20), 
-    intensity FLOAT, 
+CREATE TABLE regimeUser(
+    idUser INTEGER NOT NULL,
+    idRegime INTEGER NOT NULL,
+    duree INTEGER NOT NULL,
+    prix DOUBLE NOT NULL,
+    FOREIGN KEY (idUser) REFERENCES utilisateur(idUser),
+    FOREIGN KEY (idRegime) REFERENCES regime(idRegime)
 );
 
-CREATE TABLE recommandation(
-    idRec INT AUTO_INCREMENT PRIMARY KEY,
-    idUser INT,
-    recExercice INT, 
-    duration TIME,
-    frequence FLOAT,
-    FOREIGN KEY (recExercice) REFERENCES exercices(idExercice)
-);
+INSERT INTO utilisateur('nom','gender', 'mail', 'mdp', 'isAdmin') VALUES
+('admin','homme', 'admin@gmail.com', 'admin', 1),
+('Ny Henintsoa','homme' ,'henintsoa@gmail.com', 'admin', 0),
+('Tafita','homme' ,'tafita@gmail.com', 'admin', 0),
+('Tatamo','femme', 'tatamo@gmail.com', 'admin', 0);
 
-CREATE TABLE history(
-    idHisto INT AUTO_INCREMENT PRIMARY KEY,
-    idUser INT,
-    seance VARCHAR(20),
-    /* tsy ampy exercice effectué */
-    duration TIME,
-    burnedCal FLOAT,
-    FOREIGN KEY (idUser) REFERENCES user(idUser)
-);
-
-CREATE TABLE code(
-    idCode INT AUTO_INCREMENT PRIMARY KEY,
-    numCode INT,
-    value FLOAT
-);
-
-CREATE TABLE wallet(
-    idWallet INT AUTO_INCREMENT PRIMARY KEY,
-    idUser INT,
-    idCode INT,
-    FOREIGN KEY (idUser) REFERENCES user(idUser),
-    FOREIGN KEY (idCode) REFERENCES code(idCode) 
-);
+INSERT INTO code('code', 'montant', 'etat') VALUES
+('198428568102345', 99.999, 1);
+('410971295710591', 99.999, 1);
+('109247151651912', 49.999, 1);
+('527512071239123', 49.999, 1);
+('690270917410423', 149.999, 1);
