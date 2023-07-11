@@ -21,9 +21,9 @@ CREATE TABLE infoUtilisateur(
 
 CREATE TABLE code (
     idCode INTEGER PRIMARY KEY AUTO_INCREMENT,
-    code VARCHAR(5) NOT NULL,
-    montant double NOT NULL,
-    etat int NOT NULL
+    code VARCHAR(15) NOT NULL,
+    montant DOUBLE NOT NULL,
+    etat INTEGER NOT NULL
 );
 
 CREATE TABLE validationCode(
@@ -69,15 +69,15 @@ CREATE TABLE regimeUser(
     FOREIGN KEY (idRegime) REFERENCES regime(idRegime)
 );
 
-create table plats(
-    idPlats INTEGER NOT NULL, 
-    idObjectif INTEGER NOT NULL,
-    nom VARCHAR(50) NOT NULL,
-    FOREIGN KEY (idObjectif) REFERENCES objectif(idObjectif)
-);
+INSERT INTO utilisateur('nom','gender', 'mail', 'mdp', 'isAdmin') VALUES
+('admin','homme', 'admin@gmail.com', 'admin', 1),
+('Ny Henintsoa','homme' ,'henintsoa@gmail.com', 'admin', 0),
+('Tafita','homme' ,'tafita@gmail.com', 'admin', 0),
+('Tatamo','femme', 'tatamo@gmail.com', 'admin', 0);
 
-INSERT INTO `utilisateur` (`idUser`, `nom`,`gender`, `mail`, `mdp`, `isAdmin`) VALUES
-(NULL, 'admin','homme', 'admin@gmail.com', 'admin', 1),
-(NULL, 'mano','homme' ,'mano@gmail.com', 'admin', 0),
-(NULL, 'jimmy','homme' ,'jimmy@gmail.com', 'admin', 0),
-(NULL, 'antonio','homme', 'antonio@gmail.com', 'admin', 0);
+INSERT INTO code('code', 'montant', 'etat') VALUES
+('198428568102345', 99.999, 1);
+('410971295710591', 99.999, 1);
+('109247151651912', 49.999, 1);
+('527512071239123', 49.999, 1);
+('690270917410423', 149.999, 1);
